@@ -1,63 +1,11 @@
 from tkinter import *
 import tkinter.ttk as ttk
 import tkinter.messagebox as msg
-import os
-import pickle
-import re
+from file_manager import *
+from user import User
 
-
-
-class User:
-    def __init__(self, id, name, family, username, password, active=True):
-        self.id = id
-        self.name = name
-        self.family = family
-        self.username = username
-        self.password = password
-        self.active = active
-
-    def save(self):
-        print (f"{self.id}: {self.name} {self.family} ({'Active' if self.active else 'Inactive'})saved")
-
-
-def check_file(filename):
-    return os.path.exists(filename)
-
-
-def read_from_file(filename):
-    if check_file(filename):
-        file = open(filename, "rb")
-        data_list = pickle.load(file)
-        file.close()
-        return data_list
-    else:
-        file = open(filename, "wb")
-        file.close()
-        return []
-
-def write_to_file(filename, data_list):
-    file = open(filename, "wb")
-    pickle.dump(data_list, file)
-    file.close()
-
-
-def user_validator(user):
-    errors = []
-    if not (type(user[1]) == str and re.match(r"^[a-zA-Z\s]{3,30}$", user[1])):
-        errors.append("user Name is Invalid.")
-
-    if not (type(user[2]) == str and re.match(r"^[a-zA-Z\s]{3,30}$", user[2])):
-        errors.append("user Family is Invalid.")
-
-    if not (type(user[3]) == str , user[3]):
-        errors.append("username is Invalid.")
-
-    if not (type(user[4]) == int and user[4] > 0):
-        errors.append("Password is Invalid.")
-    return errors
 user_list = read_from_file("users.dat")
 def load_data(user_list):
-
     user_list = read_from_file("users.dat")
     for row in table.get_children():
         table.delete(row)
@@ -74,8 +22,8 @@ def reset_form():
     load_data(user_list)
 
 def save_btn_click():
-    user = (id.get(), name.get(), family.get(), username.get(), password.get(), active.get())
-    errors = user_validator(user)
+    user = User(id.get(), name.get(), family.get(), username.get(), password.get(), active.get())
+    errors = user.validate()
     if errors:
         msg.showerror(title="Error", message="\n".join(errors))
     else:
