@@ -16,8 +16,8 @@ class User:
         self.password = password
         self.active = active
 
-    def __str__(self):
-        return f"{self.id}: {self.name} {self.family} ({'Active' if self.active else 'Inactive'})"
+    def save(self):
+        print (f"{self.id}: {self.name} {self.family} ({'Active' if self.active else 'Inactive'})saved")
 
 
 def check_file(filename):
