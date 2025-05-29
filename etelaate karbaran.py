@@ -122,23 +122,27 @@ window = Tk()
 window.title("User Management")
 window.geometry("800x300")
 
-
+#ID
 Label(window, text="ID").place(x=20, y=20)
 id = IntVar(value=1)
 Entry(window, textvariable=id, state="readonly").place(x=100, y=20)
 
+#NAME
 Label(window, text="Name").place(x=20, y=50)
 name = StringVar()
 Entry(window, textvariable=name).place(x=100, y=50)
 
+#FAMILY
 Label(window, text="Family").place(x=20, y=80)
 family = StringVar()
 Entry(window, textvariable=family).place(x=100, y=80)
 
+#USERNAME
 Label(window, text="Username").place(x=20, y=110)
 username = StringVar()
 Entry(window, textvariable=username).place(x=100, y=110)
 
+#PASSWORD
 Label(window, text="Password").place(x=20, y=140)
 password = StringVar()
 Entry(window, textvariable=password, show="*").place(x=100, y=140)
