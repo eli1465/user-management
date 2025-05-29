@@ -5,6 +5,21 @@ import os
 import pickle
 import re
 
+
+
+class User:
+    def __init__(self, id, name, family, username, password, active=True):
+        self.id = id
+        self.name = name
+        self.family = family
+        self.username = username
+        self.password = password
+        self.active = active
+
+    def __str__(self):
+        return f"{self.id}: {self.name} {self.family} ({'Active' if self.active else 'Inactive'})"
+
+
 def check_file(filename):
     return os.path.exists(filename)
 
