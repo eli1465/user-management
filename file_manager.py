@@ -9,7 +9,7 @@ def check_file(filename):
 def read_from_file(filename):
     if check_file(filename):
         file = open(filename, "rb")
-        data_list = pickle.load(filename)
+        data_list = pickle.load(file)
         file.close()
         return data_list
     else:
