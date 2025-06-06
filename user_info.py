@@ -10,7 +10,12 @@ def load_data(user_list):
     for row in table.get_children():
         table.delete(row)
     for user in user_list:
-        table.insert("", END, values=user)
+        if hasattr(user, "id"):
+            values = (user.id, user.name, user.family, user.username, user.password, user.active)
+        else:
+            values = user
+        if len(values) == 6:
+            table.insert("", END, values=values)
 
 def reset_form():
     id.set(len(user_list) + 1)
@@ -50,21 +55,28 @@ def remove_btn_click():
         msg.showerror("Error", "Please select a user to remove")
         return
     selected_user = table.item(selected)["values"]
-    user_list.remove(tuple(selected_user))
+    for u in user_list:
+        u_tuple = None
+        if hasattr(u, "id"):
+            u_tuple = (str(u.id), str(u.name), str(u.family), str(u.username), str(u.password), str(u.active))
+        elif isinstance(u, tuple):
+            u_tuple = tuple(str(x) for x in u)
+        if u_tuple == tuple(str(x) for x in selected_user):
+            user_list.remove(u)
+            break
     write_to_file("users.dat", user_list)
     msg.showinfo("Removed", "User removed")
     reset_form()
 
 def table_select(x):
     selected_user = table.item(table.focus())["values"]
-    if selected_user:
+    if selected_user and len(selected_user) == 6:
         id.set(selected_user[0])
         name.set(selected_user[1])
         family.set(selected_user[2])
         username.set(selected_user[3])
         password.set(selected_user[4])
         active.set(selected_user[5])
-
 
 window = Tk()
 window.title("User Management")

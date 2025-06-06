@@ -16,3 +16,13 @@ class User:
 
     def validate(self):
         return user_validator(self)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "family": self.family,
+            "username": self.username,
+            "password": self.password,
+            "active": self.active
+        }
