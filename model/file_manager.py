@@ -11,10 +11,8 @@ def read_from_file(filename):
     try:
         with open(filename, 'rb') as file:
             return pickle.load(file)
-    except FileNotFoundError:
-        return []
     except Exception as e:
-        print(f"خطا در خواندن فایل: {e}")
+        print(f"خطا در فایل: {e}")
         return []
 
 def write_to_file(filename, data_list):
