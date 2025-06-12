@@ -1,12 +1,12 @@
 from tkinter import *
 import tkinter.ttk as ttk
 import tkinter.messagebox as msg
-from file_manager import *
-from user import User
+from model.file_manager import *
+from model.user import User
 
-user_list = read_from_file("users.dat")
+user_list = read_from_file("../model/users.dat")
 def load_data(user_list):
-    user_list = read_from_file("users.dat")
+    user_list = read_from_file("../model/users.dat")
     for row in table.get_children():
         table.delete(row)
     for user in user_list:
@@ -34,7 +34,7 @@ def save_btn_click():
     else:
         msg.showinfo(title="Saved", message="User successfully saved")
         user_list.append(user)
-        write_to_file("users.dat", user_list)
+        write_to_file("../model/users.dat", user_list)
         reset_form()
 
 def edit_btn_click():
@@ -45,7 +45,7 @@ def edit_btn_click():
     updated_user = (id.get(), name.get(), family.get(), username.get(), password.get(), active.get())
     index = int(id.get()) - 1
     user_list[index] = updated_user
-    write_to_file("users.dat", user_list)
+    write_to_file("../model/users.dat", user_list)
     msg.showinfo("Edited", "User info updated")
     reset_form()
 
@@ -64,7 +64,7 @@ def remove_btn_click():
         if u_tuple == tuple(str(x) for x in selected_user):
             user_list.remove(u)
             break
-    write_to_file("users.dat", user_list)
+    write_to_file("../model/users.dat", user_list)
     msg.showinfo("Removed", "User removed")
     reset_form()
 

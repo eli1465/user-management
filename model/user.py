@@ -17,12 +17,7 @@ class User:
     def validate(self):
         return user_validator(self)
 
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "family": self.family,
-            "username": self.username,
-            "password": self.password,
-            "active": self.active
-        }
+    def to_tuple(self):
+        return self.id, self.name, self.family, self.username, self.password, self.active
+
+
