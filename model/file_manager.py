@@ -8,18 +8,18 @@ def check_file(filename):
 
 
 def read_from_file(filename):
-    try:
-        with open(filename, 'rb') as file:
-            return pickle.load(file)
-    except Exception as e:
-        print(f"خطا در فایل: {e}")
+    if check_file(filename):
+        file = open(filename,"rb")
+        data_list = pickle.load(file)
+        file.close()
+        return data_list
+    else:
+        file = open(filename,"wb")
+        file.close()
         return []
 
 def write_to_file(filename, data_list):
-    try:
-        with open(filename, 'wb') as file:
-            pickle.dump(data_list, file)
-        return True
-    except Exception as e:
-        print(f"خطا در نوشتن فایل: {e}")
-        return False
+    file = open(filename, "wb")
+    pickle.dump(data_list, file)
+    file.close()
+
