@@ -1,9 +1,9 @@
 from tkinter import *
 import tkinter.ttk as ttk
 import tkinter.messagebox as msg
-from model.file_manager import *
-from model.user import User
-from model.validation import user_validator
+from model.repository.file_manager import *
+from model.entity.user import User
+from model.tools.validation import user_validator
 
 user_list = read_from_file("../model/users.dat")
 def load_data(user_list):
