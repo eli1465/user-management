@@ -1,4 +1,4 @@
-from validation import user_validator
+from model.validation import user_validator
 
 
 class User:
