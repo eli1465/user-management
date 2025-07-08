@@ -72,11 +72,10 @@ def table_select(x):
         return
 
     selected_user = table.item(table.focus())["values"]
-
     if not selected_user or len(selected_user) < 6:
         msg.showerror("Error", "Invalid or empty selection")
         return
-
+    if selected_user:
         id.set(selected_user[0])
         name.set(selected_user[1])
         family.set(selected_user[2])
