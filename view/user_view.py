@@ -71,8 +71,7 @@ def table_select(x):
         msg.showerror("Error", "Please select a user")
         return
 
-    selected_item = table.item(selected)
-    selected_user = selected_item.get("values")
+    selected_user = table.item(table.focus())["values"]
 
     if not selected_user or len(selected_user) < 6:
         msg.showerror("Error", "Invalid or empty selection")
