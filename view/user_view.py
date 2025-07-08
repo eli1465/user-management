@@ -5,11 +5,11 @@ from model.repository.file_manager import *
 from model.entity.user import User
 from model.tools.validation import user_validator
 
-user_list = read_from_file("../model/repository/users.dat")
+FILENAME = "model/repository/users.dat"
+user_list = read_from_file(FILENAME)
 
-
-def load_data(user_list):
-    user_list = read_from_file("../model/repository/users.dat")
+def load_data():
+    user_list = read_from_file(FILENAME)
     for row in table.get_children():
         table.delete(row)
     for user in user_list:
@@ -17,13 +17,13 @@ def load_data(user_list):
 
 
 def reset_form():
-    id.set(id.get() + 1)
+    id.set(len(user_list) + 1)
     name.set("")
     family.set("")
     username.set("")
     password.set("")
     active.set(True)
-    load_data(user_list)
+    load_data()
 
 
 def save_btn_click():
@@ -32,11 +32,12 @@ def save_btn_click():
     if errors:
         msg.showerror("validation Error", "\n".join(errors))
         return
-    table.insert("", END, values=(user.id, user.name, user.family, user.username, user.password, user.active))
-    msg.showinfo(title="Saved", message="User successfully saved")
-    user_list.append(user)
-    write_to_file("../model/repository/users.dat", user_list)
-    reset_form()
+    else:
+        table.insert("", END, values=(user.id, user.name, user.family, user.username, user.password, user.active))
+        msg.showinfo(title="Saved", message="User successfully saved")
+        user_list.append(user)
+        write_to_file(FILENAME, user_list)
+        reset_form()
 
 
 
@@ -48,19 +49,35 @@ def edit_btn_click():
     updated_user = (id.get(), name.get(), family.get(), username.get(), password.get(), active.get())
     index = int(id.get()) - 1
     user_list[index] = updated_user
-    write_to_file("../model/repository/users.dat", user_list)
+    write_to_file(FILENAME, user_list)
     msg.showinfo("Edited", "User info updated")
     reset_form()
 
 
-def clear_btn_click():
-    for row in table.get_children():
-        table.delete(row)
-
+def remove_btn_click():
+    selected = table.focus()
+    if not selected:
+        msg.showerror("Error", "Please select a user to remove.")
+        return
+    index = int(table.index(selected))
+    del user_list[index]
+    write_to_file(FILENAME, user_list)
+    msg.showinfo("Removed", "User removed")
+    reset_form()
 
 def table_select(x):
-    selected_user = table.item(table.focus())["values"]
-    if selected_user and len(selected_user) == 6:
+    selected = table.focus()
+    if not selected:
+        msg.showerror("Error", "Please select a user")
+        return
+
+    selected_item = table.item(selected)
+    selected_user = selected_item.get("values")
+
+    if not selected_user or len(selected_user) < 6:
+        msg.showerror("Error", "Invalid or empty selection")
+        return
+
         id.set(selected_user[0])
         name.set(selected_user[1])
         family.set(selected_user[2])
@@ -71,7 +88,7 @@ def table_select(x):
 
 window = Tk()
 window.title("User Management")
-window.geometry("800x300")
+window.geometry("800x360")
 
 # ID
 Label(window, text="ID").place(x=20, y=20)
@@ -104,7 +121,7 @@ Radiobutton(window, text="Inactive", variable=active, value=False).place(x=160, 
 
 Button(window, text="Save", width=8, command=save_btn_click).place(x=20, y=210)
 Button(window, text="Edit", width=8, command=edit_btn_click).place(x=100, y=210)
-Button(window, text="clear", width=8, command=clear_btn_click).place(x=180, y=210)
+Button(window, text="remove", width=8, command=remove_btn_click).place(x=180, y=210)
 Button(window, text="Clear", width=25, command=reset_form).place(x=20, y=250)
 
 table = ttk.Treeview(window, columns=(1, 2, 3, 4, 5, 6), show="headings")
@@ -115,7 +132,7 @@ table.heading(4, text="Username")
 table.heading(5, text="Password")
 table.heading(6, text="Active")
 
-table.column(1, width=40)
+table.column(1, width=50)
 table.column(2, width=100)
 table.column(3, width=100)
 table.column(4, width=100)
@@ -123,7 +140,7 @@ table.column(5, width=100)
 table.column(6, width=60)
 
 table.bind("<<TreeviewSelect>>", table_select)
-table.place(x=300, y=20, width=470, height=220)
+table.place(x=300, y=20, width=480, height=220)
 
 reset_form()
 
