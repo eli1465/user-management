@@ -6,20 +6,21 @@ def check_file (filename):
 
 
 def read_from_file(filename):
-    if not check_file(filename):
-        os.makedirs(os.path.dirname(filename),exist_ok= True)
-        with open(filename,"wb")as f:
-            pickle.dump([],f)
+    if check_file(filename):
+        with open(filename,"rb")as file:
+            try:
+                return pickle.load(file)
+            except EOFError:
+                return[]
+    else:
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        with open(filename, "wb") as file:
+            pickle.dump([],file)
         return[]
-    if os.stat(filename).st_size ==0:
-        return[]
-    with open(filename,"rb")as f:
-        return pickle.load(f)
-
 
 
 def write_to_file(filename, data_list):
     os.makedirs(os.path.dirname(filename), exist_ok=True)
-    with open(filename,"wb")as f:
-        pickle.dump(data_list, f)
+    with open(filename,"wb")as file:
+        pickle.dump(data_list, file)
 
