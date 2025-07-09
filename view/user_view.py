@@ -5,7 +5,7 @@ from model.repository.file_manager import *
 from model.entity.user import User
 from model.tools.validation import user_validator
 
-FILENAME = "model/repository/users.dat"
+FILENAME = "../model/repository/users.dat"
 user_list = read_from_file(FILENAME)
 
 def load_data():
@@ -13,7 +13,8 @@ def load_data():
     for row in table.get_children():
         table.delete(row)
     for user in user_list:
-        table.insert("", END, values=user.to_tuple())
+        if isinstance(user,User):
+            table.insert("", END, values=user.to_tuple())
 
 
 def reset_form():
@@ -46,11 +47,12 @@ def edit_btn_click():
     if not selected:
         msg.showerror("Error", "Please select a user to edit")
         return
-    updated_user = (id.get(), name.get(), family.get(), username.get(), password.get(), active.get())
+    updated_user =User(id.get(),name.get(),family.get(),username.get(),password.get(),active.get())
     index = int(id.get()) - 1
     user_list[index] = updated_user
     write_to_file(FILENAME, user_list)
     msg.showinfo("Edited", "User info updated")
+    load_data()
     reset_form()
 
 
@@ -66,22 +68,16 @@ def remove_btn_click():
     reset_form()
 
 def table_select(x):
-    selected = table.focus()
-    if not selected:
-        msg.showerror("Error", "Please select a user")
-        return
-
-    selected_user = table.item(table.focus())["values"]
-    if not selected_user or len(selected_user) < 6:
-        msg.showerror("Error", "Invalid or empty selection")
-        return
-    if selected_user:
-        id.set(selected_user[0])
-        name.set(selected_user[1])
-        family.set(selected_user[2])
-        username.set(selected_user[3])
-        password.set(selected_user[4])
-        active.set(selected_user[5])
+    selected= table.item(table.focus())["values"]
+    if selected:
+        selected_user = User(*selected)
+        if selected_user:
+            id.set(selected_user.id)
+            name.set(selected_user.name)
+            family.set(selected_user.family)
+            username.set(selected_user.username)
+            password.set(selected_user.password)
+            active.set(selected_user.active)
 
 
 window = Tk()
