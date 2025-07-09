@@ -24,3 +24,4 @@ def write_to_file(filename, data_list):
     with open(filename,"wb")as file:
         pickle.dump(data_list, file)
 
+#to du
