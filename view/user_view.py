@@ -137,5 +137,4 @@ table.bind("<<TreeviewSelect>>", table_select)
 table.place(x=300, y=20, width=480, height=220)
 
 reset_form()
-
 window.mainloop()

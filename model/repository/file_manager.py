@@ -22,4 +22,4 @@ def read_from_file(filename):
 def write_to_file(filename, data_list):
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     with open(filename,"wb")as file:
-        pickle.dump(data_list, file
+        pickle.dump(data_list, file)

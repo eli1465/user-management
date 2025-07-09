@@ -1,6 +1,5 @@
 from model.tools.validation import user_validator
 
-
 class User:
     def __init__(self, id, name, family, username, password, active=True):
         self.id = id

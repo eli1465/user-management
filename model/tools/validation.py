@@ -1,6 +1,5 @@
 import re
 
-
 def user_validator(user):
     errors = []
     if not (type(user.name) == str and re.match(r"^[a-zA-Z\s]{3,30}$", user.name)):
